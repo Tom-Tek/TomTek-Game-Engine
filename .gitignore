@@ -416,3 +416,9 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Rider
+.idea/
+
+# Visual Studio
+*.sln
