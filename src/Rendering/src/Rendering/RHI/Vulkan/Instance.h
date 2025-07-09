@@ -17,16 +17,40 @@
  * 
  * Script Author: Liam Rousselle
  */
+#pragma once
+
+#if defined (_WIN32) || (__linux__)
+
 #include <iostream>
+#include <vulkan/vulkan.h>
 
-#include "Core/EngineCore.h"
+#include "ValidationLayers.h"
 
-using namespace TomTekEngine::Core;
-
-int main( int argc, char* argv[] )
+namespace TomTekEngine::Rendering 
 {
-	EngineCore engineCore;
-	engineCore.BeginRuntime();
+	class Instance final
+	{
+	public:
+		Instance() = default;
+		~Instance();
 
-	return EXIT_SUCCESS;
+	public:
+		/// Initializes the Vulkan instance by creating the VkInstance handle.
+		/// This sets up the Vulkan API connection and must be called before using any Vulkan functionality.
+		void Initialize(VkApplicationInfo appInfo);
+
+	public:
+		VkInstance GetNative(void) const { return m_NativeInstance; }
+		operator VkInstance(void) const { return m_NativeInstance; }
+
+	private:
+		VkInstance m_NativeInstance;
+
+#ifndef NDEBUG
+		ValidationLayers m_ValidationLayers;
+#endif
+
+	};
 }
+
+#endif

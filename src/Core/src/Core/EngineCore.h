@@ -1,0 +1,47 @@
+/**
+ * Copyright (c) 2025 Liam Rousselle
+ * Copyright (c) 2025 TomTek
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * 
+ * Script Author: Liam Rousselle
+ */
+#pragma once
+
+#include "Window/EngineWindow.h"
+#include "Rendering/EngineRenderer.h"
+
+namespace TomTekEngine::Core 
+{
+	/// A list of all macros for EngineCore construction:
+	/// 	ENGINE_CORE_HEADLESS - Builds the engine headless without any graphics/window implementation 
+	class EngineCore final
+	{
+	public:
+		/// Read above the class definition for macros which will affect how the class is constructed.
+		/// Eg: Defining ENGINE_CORE_HEADLESS will build the engine completely headless.
+		EngineCore();
+
+	public:
+		/// Begins the games runtime until the client asks the process to end or if an exception
+		/// is thrown.
+		void BeginRuntime(void);
+
+	private:
+		std::unique_ptr<TomTekEngine::Rendering::EngineWindow> m_Window = nullptr;
+
+		std::unique_ptr<TomTekEngine::Rendering::EngineRenderer> m_Renderer = nullptr;
+
+	};
+}

@@ -17,16 +17,38 @@
  * 
  * Script Author: Liam Rousselle
  */
+#include "EngineCore.h"
+
 #include <iostream>
 
-#include "Core/EngineCore.h"
+#if !defined (ENGINE_CORE_HEADLESS)
+	using namespace TomTekEngine::Rendering;
+#endif
 
-using namespace TomTekEngine::Core;
-
-int main( int argc, char* argv[] )
+namespace TomTekEngine::Core 
 {
-	EngineCore engineCore;
-	engineCore.BeginRuntime();
+	EngineCore::EngineCore()
+	{
 
-	return EXIT_SUCCESS;
+		
+#if defined ENGINE_CORE_HEADLESS
+		std::cout << "Building engine core headless.\n";
+#else
+		std::cout << "Building engine core with head.\n";
+
+		// Building with a head so create a window & renderer
+		m_Window = std::unique_ptr<EngineWindow>(EngineWindow::CreateEngineWindow("My Window!", 800, 600));
+		// Create the renderer
+		m_Renderer = std::unique_ptr<EngineRenderer>(EngineRenderer::CreateEngineRenderer(m_Window.get()));
+#endif
+	}
+
+	void EngineCore::BeginRuntime(void)
+	{
+		while ( true )
+		{
+			if ( m_Window.get() )
+				m_Window->PollWindowEvents();
+		}
+	}
 }

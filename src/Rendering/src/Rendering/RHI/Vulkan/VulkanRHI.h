@@ -17,16 +17,30 @@
  * 
  * Script Author: Liam Rousselle
  */
-#include <iostream>
+#pragma once
 
-#include "Core/EngineCore.h"
+#if defined (_WIN32) || defined (__linux__)
 
-using namespace TomTekEngine::Core;
+#include "Rendering/EngineRenderer.h"
 
-int main( int argc, char* argv[] )
+#include "Instance.h"
+
+namespace TomTekEngine::Rendering 
 {
-	EngineCore engineCore;
-	engineCore.BeginRuntime();
+	class EngineWindow;
 
-	return EXIT_SUCCESS;
+	class VulkanRHI final : public EngineRenderer
+	{
+	public:
+		VulkanRHI(EngineWindow* windowTarget);
+		~VulkanRHI();
+
+	private:
+		VkApplicationInfo m_ApplicationInfo;
+
+		Instance m_Instance;
+
+	};
 }
+
+#endif

@@ -22,21 +22,11 @@ workspace "TomTek-Game-Engine"
     architecture "x64"
     startproject "Editor"
 
+    targetdir "binaries/%{cfg.buildcfg}/%{cfg.architecture}/%{prj.name}"
+    objdir "intermediate/%{cfg.buildcfg}/%{cfg.architecture}/%{prj.name}"
+
+    platforms { "x64" }
     configurations { "Debug", "Release" }
-
-group "Engine"
-project "Editor"
-    location "src/Editor"
-    kind "ConsoleApp"
-    language "C++"
-    cppdialect "C++20"
-
-    files
-    {
-        "%{prj.location}/src/**.cpp",
-        "%{prj.location}/src/**.hpp",
-        "%{prj.location}/src/**.h",
-    }
 
     filter { "configurations:Debug" }
         defines { "DEBUG" }
@@ -45,3 +35,25 @@ project "Editor"
     filter { "configurations:Release" }
         defines { "NDEBUG" }
         optimize "On"
+
+    filter { "system:windows" }
+        includedirs 
+        { 
+            "$(VULKAN_SDK)/Include" ,
+        }
+
+        libdirs
+        {
+            "$(VULKAN_SDK)/Lib",
+        }
+
+        links
+        {
+            "vulkan-1",
+        }
+
+    filter {}
+
+    include "src/Editor"
+    include "src/Core"
+    include "src/Rendering"

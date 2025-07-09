@@ -17,16 +17,34 @@
  * 
  * Script Author: Liam Rousselle
  */
-#include <iostream>
+#include "EngineWindow.h"
 
-#include "Core/EngineCore.h"
+#ifdef _WIN32
+	#include "Win32EngineWindow.h"
+#elif __linux__
 
-using namespace TomTekEngine::Core;
+#elif __APPLE__
 
-int main( int argc, char* argv[] )
+#endif
+
+namespace TomTekEngine::Rendering 
 {
-	EngineCore engineCore;
-	engineCore.BeginRuntime();
+	EngineWindow::EngineWindow(const char* winName, uint32_t width, uint32_t height) :
+		m_WindowName(winName),
+		m_Width(width),
+		m_Height(height)
+	{}
 
-	return EXIT_SUCCESS;
-}
+	EngineWindow* EngineWindow::CreateEngineWindow(const char* winName, uint32_t width, uint32_t height)
+	{
+#ifdef _WIN32
+		return (EngineWindow*) new Win32EngineWindow(winName, width, height);
+#elif __linux__
+
+#elif __APPLE__
+
+#endif
+
+		return nullptr;
+	}
+};

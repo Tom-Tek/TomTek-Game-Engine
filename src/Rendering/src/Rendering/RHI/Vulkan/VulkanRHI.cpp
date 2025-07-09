@@ -17,16 +17,37 @@
  * 
  * Script Author: Liam Rousselle
  */
-#include <iostream>
+#if defined (_WIN32) || defined (__linux__)
 
-#include "Core/EngineCore.h"
+#include <vulkan/vulkan.h>
 
-using namespace TomTekEngine::Core;
+#include "VulkanRHI.h"
+#include "Window/EngineWindow.h"
 
-int main( int argc, char* argv[] )
+namespace TomTekEngine::Rendering 
 {
-	EngineCore engineCore;
-	engineCore.BeginRuntime();
+	VulkanRHI::VulkanRHI(EngineWindow* windowTarget) :
+		EngineRenderer(windowTarget),
+		m_ApplicationInfo(
+			{
+				.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
+				.pNext = nullptr,
+				.pApplicationName = "TomTek-Vulkan",
+				.applicationVersion = VK_MAKE_VERSION( 1, 0, 0 ),
+				.pEngineName = "TomTek-Vulkan-Engine",
+				.engineVersion = VK_MAKE_VERSION( 1, 0, 0 ),
+				.apiVersion = VK_API_VERSION_1_2,
+			}
+		)
+	{
+		m_Instance.Initialize(m_ApplicationInfo);
+	}
 
-	return EXIT_SUCCESS;
+	VulkanRHI::~VulkanRHI()
+	{}
+
+
+
 }
+
+#endif

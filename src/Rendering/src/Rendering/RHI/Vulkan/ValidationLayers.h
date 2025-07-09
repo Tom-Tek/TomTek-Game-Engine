@@ -17,16 +17,34 @@
  * 
  * Script Author: Liam Rousselle
  */
+#pragma once
+
+#if defined (_WIN32) || defined (__linux__) && !defined (NDEBUG)
+
 #include <iostream>
+#include <vector>
 
-#include "Core/EngineCore.h"
+#include <vulkan/vulkan.h>
 
-using namespace TomTekEngine::Core;
-
-int main( int argc, char* argv[] )
+namespace TomTekEngine::Rendering 
 {
-	EngineCore engineCore;
-	engineCore.BeginRuntime();
+	class Instance;
 
-	return EXIT_SUCCESS;
+	class ValidationLayers final
+	{
+	public:
+		void Initialize(Instance* ownerInstance);
+
+	public:
+		const std::vector<const char*>& GetValidationLayers() const { return k_ValidationLayers; }
+
+	private:
+		VkDebugUtilsMessengerEXT m_DebugMessenger;
+
+		const std::vector<const char*> k_ValidationLayers = {
+			"VK_LAYER_KHRONOS_validation",
+		};
+	};
 }
+
+#endif
