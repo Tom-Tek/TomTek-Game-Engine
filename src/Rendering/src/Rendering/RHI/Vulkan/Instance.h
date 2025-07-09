@@ -31,7 +31,7 @@ namespace TomTekEngine::Rendering
 	class Instance final
 	{
 	public:
-		Instance() = default;
+		Instance();
 		~Instance();
 
 	public:
@@ -40,11 +40,22 @@ namespace TomTekEngine::Rendering
 		void Initialize(VkApplicationInfo appInfo);
 
 	public:
-		VkInstance GetNative(void) const { return m_NativeInstance; }
-		operator VkInstance(void) const { return m_NativeInstance; }
+		VkInstance GetNative() const { return m_NativeInstance; }
+		operator VkInstance() const { return m_NativeInstance; }
 
 	private:
 		VkInstance m_NativeInstance;
+
+		const std::vector<const char*> m_ExtensionsUsed = {
+
+#ifndef NDEBUG
+			// Debug only extensions here
+			"VK_EXT_debug_utils",
+#endif
+
+			"VK_KHR_surface",
+			//"VK_KHR_swapchain",
+		};
 
 #ifndef NDEBUG
 		ValidationLayers m_ValidationLayers;

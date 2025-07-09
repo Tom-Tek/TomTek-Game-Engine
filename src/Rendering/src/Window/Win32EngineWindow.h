@@ -43,7 +43,7 @@ namespace TomTekEngine::Rendering
 		/// 
 		/// @return true if the window should remain active, false if the window
 		///         should be closed (e.g., user clicked the X button or pressed Alt+F4)
-		virtual bool PollWindowEvents(void) override;
+		virtual bool PollWindowEvents() override;
 
 	private:
 		HINSTANCE m_HandleToInstance;

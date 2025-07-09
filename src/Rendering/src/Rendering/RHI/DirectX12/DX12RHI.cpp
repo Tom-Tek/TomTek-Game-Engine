@@ -17,35 +17,18 @@
  * 
  * Script Author: Liam Rousselle
  */
-#if defined (_WIN32) || defined (__linux__)
+#ifdef _WIN32
 
-#include "VulkanRHI.h"
+#include "DX12RHI.h"
 #include "Window/EngineWindow.h"
 
 namespace TomTekEngine::Rendering 
 {
-	VulkanRHI::VulkanRHI(EngineWindow* windowTarget) :
-		EngineRenderer(windowTarget),
-		m_ApplicationInfo(
-			{
-				.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
-				.pNext = nullptr,
-				.pApplicationName = "TomTek-Vulkan",
-				.applicationVersion = VK_MAKE_VERSION( 1, 0, 0 ),
-				.pEngineName = "TomTek-Vulkan-Engine",
-				.engineVersion = VK_MAKE_VERSION( 1, 0, 0 ),
-				.apiVersion = VK_API_VERSION_1_2,
-			}
-		)
+	DX12RHI::DX12RHI(EngineWindow* targetWindow) :
+		EngineRenderer(targetWindow)
 	{
-		m_Instance.Initialize(m_ApplicationInfo);
+
 	}
-
-	VulkanRHI::~VulkanRHI()
-	{}
-
-
-
 }
 
 #endif

@@ -36,6 +36,10 @@ namespace TomTekEngine::Rendering
 		return VK_FALSE; // Never abort from the program
 	}
 
+	ValidationLayers::ValidationLayers() :
+		m_DebugMessenger(VK_NULL_HANDLE)
+	{}
+
 	void ValidationLayers::Initialize(Instance* ownerInstance)
 	{
 		const VkDebugUtilsMessengerCreateInfoEXT createInfo = {
@@ -56,14 +60,14 @@ namespace TomTekEngine::Rendering
 			.pUserData = nullptr,
 		};
 
-		PFN_vkCreateDebugUtilsMessengerEXT createDebugUtilsMessegner =
+		PFN_vkCreateDebugUtilsMessengerEXT createDebugUtilsMessenger =
 			(PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr( ownerInstance->GetNative(), "vkCreateDebugUtilsMessengerEXT");
-		if ( !createDebugUtilsMessegner )
+		if ( !createDebugUtilsMessenger )
 		{
 			throw std::runtime_error( "Fatal Error! Cannot find address of vkCreateDebugUtilsMessengerEXT" );
 		}
 
-		if ( createDebugUtilsMessegner( ownerInstance->GetNative(), &createInfo, nullptr, &m_DebugMessenger ) != VK_SUCCESS )
+		if ( createDebugUtilsMessenger( ownerInstance->GetNative(), &createInfo, nullptr, &m_DebugMessenger ) != VK_SUCCESS )
 		{
 			throw std::runtime_error( "vkCreateDebugUtilsMessengerEXT failed to create m_DebugMessenger!" );
 		}

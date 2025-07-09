@@ -57,7 +57,7 @@ namespace TomTekEngine::Rendering
 		///		Windows - Vulkan
 		///		Linux - Vulkan
 		///		MacOS - Metal
-		static SupportedRenderingAPIs GetBestSuitedAPI(void);
+		static SupportedRenderingAPIs GetBestSuitedAPI();
 
 	protected:
 		EngineWindow* m_WindowTarget;

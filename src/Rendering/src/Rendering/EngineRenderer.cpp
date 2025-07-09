@@ -20,9 +20,10 @@
 #include "EngineRenderer.h"
 
 #ifdef _WIN32
+	#include "RHI/DirectX12/DX12RHI.h"
 	#include "RHI/Vulkan/VulkanRHI.h"
 #elif __linux__
-
+	#include "RHI/Vulkan/VulkanRHI.h"
 #elif __APPLE__
 
 #endif
@@ -40,14 +41,14 @@ namespace TomTekEngine::Rendering
 		if ( suitedAPI == SupportedRenderingAPIs::Vulkan )
 			return new VulkanRHI(windowTarget);
 		else if ( suitedAPI == SupportedRenderingAPIs::DirectX12 )
-			return nullptr;
+			return new DX12RHI(windowTarget);
 		else if ( suitedAPI == SupportedRenderingAPIs::Metal )
 			return nullptr;
 
 		return nullptr;
 	}
 
-	SupportedRenderingAPIs EngineRenderer::GetBestSuitedAPI(void)
+	SupportedRenderingAPIs EngineRenderer::GetBestSuitedAPI()
 	{
 #ifdef FORCE_RENDERING_API
 		if (strcmp(FORCE_RENDERING_API, "None") == 0)

@@ -33,15 +33,18 @@ namespace TomTekEngine::Rendering
 	class ValidationLayers final
 	{
 	public:
+		ValidationLayers();
+
+	public:
 		void Initialize(Instance* ownerInstance);
 
 	public:
-		const std::vector<const char*>& GetValidationLayers() const { return k_ValidationLayers; }
+		const std::vector<const char*>& GetValidationLayers() const { return m_ValidationLayers; }
 
 	private:
 		VkDebugUtilsMessengerEXT m_DebugMessenger;
 
-		const std::vector<const char*> k_ValidationLayers = {
+		const std::vector<const char*> m_ValidationLayers = {
 			"VK_LAYER_KHRONOS_validation",
 		};
 	};

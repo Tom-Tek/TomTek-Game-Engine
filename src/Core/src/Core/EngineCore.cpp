@@ -43,7 +43,7 @@ namespace TomTekEngine::Core
 #endif
 	}
 
-	void EngineCore::BeginRuntime(void)
+	void EngineCore::BeginRuntime()
 	{
 		while ( true )
 		{

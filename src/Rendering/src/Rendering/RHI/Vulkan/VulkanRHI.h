@@ -21,8 +21,9 @@
 
 #if defined (_WIN32) || defined (__linux__)
 
-#include "Rendering/EngineRenderer.h"
+#include <vulkan/vulkan.h>
 
+#include "Rendering/EngineRenderer.h"
 #include "Instance.h"
 
 namespace TomTekEngine::Rendering 

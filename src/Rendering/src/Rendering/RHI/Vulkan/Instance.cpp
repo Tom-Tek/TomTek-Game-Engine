@@ -18,10 +18,13 @@
  * Script Author: Liam Rousselle
  */
 #include "Instance.h"
-#include "ValidationLayers.h"
 
 namespace TomTekEngine::Rendering 
 {
+	Instance::Instance() :
+		m_NativeInstance(VK_NULL_HANDLE)
+	{}
+
 	Instance::~Instance()
 	{
 		vkDestroyInstance(m_NativeInstance, nullptr);
@@ -42,8 +45,8 @@ namespace TomTekEngine::Rendering
 			.enabledLayerCount = (uint32_t) m_ValidationLayers.GetValidationLayers().size(),
 			.ppEnabledLayerNames = m_ValidationLayers.GetValidationLayers().data(),
 #endif
-			.enabledExtensionCount = 0,
-			.ppEnabledExtensionNames = nullptr
+			.enabledExtensionCount = (uint32_t) m_ExtensionsUsed.size(),
+			.ppEnabledExtensionNames = m_ExtensionsUsed.data()
 		};
 
 		if ( vkCreateInstance(&createInfo, nullptr, &m_NativeInstance) != VK_SUCCESS )
@@ -51,7 +54,9 @@ namespace TomTekEngine::Rendering
 			throw std::runtime_error("TomTekEngine::Rendering vulkan vkInstance failed to create m_NativeInstance");
 		}
 
-		m_ValidationLayers.Initialize(this);
+#ifndef NDEBUG
+			m_ValidationLayers.Initialize(this);
+#endif
 
 		std::cout << "Vulkan Instance created\n";
 	}

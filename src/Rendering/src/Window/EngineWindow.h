@@ -45,7 +45,7 @@ namespace TomTekEngine::Rendering
         /// 
         /// @return true if the window should remain active, false if the window
         ///         should be closed (e.g., user clicked the X button or pressed Alt+F4)
-        virtual bool PollWindowEvents(void) = 0;
+        virtual bool PollWindowEvents() = 0;
 
     protected:
         const char* m_WindowName;

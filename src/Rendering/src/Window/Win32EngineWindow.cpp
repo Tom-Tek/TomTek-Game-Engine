@@ -83,7 +83,7 @@ namespace TomTekEngine::Rendering
 
 	}
 
-	bool Win32EngineWindow::PollWindowEvents(void)
+	bool Win32EngineWindow::PollWindowEvents()
 	{
 		if ( !GetMessage(&m_Message, nullptr, 0, 0) )
 		{

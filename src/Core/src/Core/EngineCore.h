@@ -36,7 +36,7 @@ namespace TomTekEngine::Core
 	public:
 		/// Begins the games runtime until the client asks the process to end or if an exception
 		/// is thrown.
-		void BeginRuntime(void);
+		void BeginRuntime();
 
 	private:
 		std::unique_ptr<TomTekEngine::Rendering::EngineWindow> m_Window = nullptr;
