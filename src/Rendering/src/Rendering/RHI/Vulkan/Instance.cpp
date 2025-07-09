@@ -17,6 +17,8 @@
  * 
  * Script Author: Liam Rousselle
  */
+#if defined (_WIN32) || defined (__linux__)
+
 #include "Instance.h"
 
 namespace TomTekEngine::Rendering 
@@ -61,3 +63,5 @@ namespace TomTekEngine::Rendering
 		std::cout << "Vulkan Instance created\n";
 	}
 }
+
+#endif

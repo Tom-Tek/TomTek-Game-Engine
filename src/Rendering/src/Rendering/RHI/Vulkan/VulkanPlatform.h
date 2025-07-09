@@ -17,37 +17,20 @@
  * 
  * Script Author: Liam Rousselle
  */
-#pragma once
+#if defined (_WIN32) || defined (__linux__)
 
-#if defined (_WIN32) || defined (__linux__) && !defined (NDEBUG)
+#ifndef VULKAN_PLATFORM_H
+#define VULKAN_PLATFORM_H
 
-#include <iostream>
-#include <vector>
 
-#include "VulkanPlatform.h"
+#ifdef _WIN32
+	#define VK_USE_PLATFORM_WIN32_KHR
+#elif __linux__
+	#define VK_USE_PLATFORM_XLIB_KHR
+#endif
+#include <vulkan/vulkan.h>
 
-namespace TomTekEngine::Rendering 
-{
-	class Instance;
 
-	class ValidationLayers final
-	{
-	public:
-		ValidationLayers();
-
-	public:
-		void Initialize(Instance* ownerInstance);
-
-	public:
-		const std::vector<const char*>& GetValidationLayers() const { return m_ValidationLayers; }
-
-	private:
-		VkDebugUtilsMessengerEXT m_DebugMessenger;
-
-		const std::vector<const char*> m_ValidationLayers = {
-			"VK_LAYER_KHRONOS_validation",
-		};
-	};
-}
+#endif
 
 #endif

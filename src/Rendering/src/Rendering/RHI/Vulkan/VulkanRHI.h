@@ -21,7 +21,7 @@
 
 #if defined (_WIN32) || defined (__linux__)
 
-#include <vulkan/vulkan.h>
+#include "VulkanPlatform.h"
 
 #include "Rendering/EngineRenderer.h"
 #include "Instance.h"

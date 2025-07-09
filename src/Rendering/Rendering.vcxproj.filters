@@ -30,6 +30,7 @@
     <ClInclude Include="src\Rendering\RHI\Vulkan\Instance.h" />
     <ClInclude Include="src\Rendering\RHI\Vulkan\ValidationLayers.h" />
     <ClInclude Include="src\Rendering\RHI\DirectX12\DX12RHI.h" />
+    <ClInclude Include="src\Rendering\RHI\Vulkan\Surface.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Rendering\EngineRenderer.cpp">
@@ -47,5 +48,6 @@
     <ClCompile Include="src\Rendering\RHI\Vulkan\Instance.cpp" />
     <ClCompile Include="src\Rendering\RHI\Vulkan\ValidationLayers.cpp" />
     <ClCompile Include="src\Rendering\RHI\DirectX12\DX12RHI.cpp" />
+    <ClCompile Include="src\Rendering\RHI\Vulkan\VulkanPlatform.h" />
   </ItemGroup>
 </Project>

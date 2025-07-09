@@ -19,10 +19,10 @@
  */
 #pragma once
 
-#if defined (_WIN32) || (__linux__)
+#if defined (_WIN32) || defined (__linux__)
 
 #include <iostream>
-#include <vulkan/vulkan.h>
+#include "VulkanPlatform.h"
 
 #include "ValidationLayers.h"
 

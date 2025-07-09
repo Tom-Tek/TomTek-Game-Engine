@@ -19,34 +19,20 @@
  */
 #pragma once
 
-#if defined (_WIN32) || defined (__linux__) && !defined (NDEBUG)
-
-#include <iostream>
-#include <vector>
+#if defined (_WIN32) || defined (__linux__)
 
 #include "VulkanPlatform.h"
 
 namespace TomTekEngine::Rendering 
 {
-	class Instance;
-
-	class ValidationLayers final
+	class Surface final
 	{
 	public:
-		ValidationLayers();
-
-	public:
-		void Initialize(Instance* ownerInstance);
-
-	public:
-		const std::vector<const char*>& GetValidationLayers() const { return m_ValidationLayers; }
+		Surface() = default;
+		~Surface() = default;
 
 	private:
-		VkDebugUtilsMessengerEXT m_DebugMessenger;
 
-		const std::vector<const char*> m_ValidationLayers = {
-			"VK_LAYER_KHRONOS_validation",
-		};
 	};
 }
 
