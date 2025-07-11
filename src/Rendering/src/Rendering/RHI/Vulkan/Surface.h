@@ -22,16 +22,28 @@
 #if defined (_WIN32) || defined (__linux__)
 
 #include "VulkanPlatform.h"
+#include "Window/EngineWindow.h"
 
 namespace TomTekEngine::Rendering 
 {
+	class Instance;
+
 	class Surface final
 	{
 	public:
-		Surface() = default;
-		~Surface() = default;
+		Surface();
+		~Surface();
+
+	public:
+		void Initialize(Instance ownerInstance, EngineWindow* windowTarget);
+
+	public:
+		VkSurfaceKHR GetNative() const { return m_NativeSurface; }
+		operator VkSurfaceKHR() const { return m_NativeSurface; }
 
 	private:
+		VkSurfaceKHR m_NativeSurface;
+		Instance* m_OwnerInstance;
 
 	};
 }

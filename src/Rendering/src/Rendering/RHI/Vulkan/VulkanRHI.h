@@ -25,6 +25,7 @@
 
 #include "Rendering/EngineRenderer.h"
 #include "Instance.h"
+#include "Surface.h"
 
 namespace TomTekEngine::Rendering 
 {
@@ -40,6 +41,7 @@ namespace TomTekEngine::Rendering
 		VkApplicationInfo m_ApplicationInfo;
 
 		Instance m_Instance;
+		Surface m_Surface;
 
 	};
 }

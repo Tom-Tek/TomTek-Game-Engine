@@ -39,6 +39,7 @@ namespace TomTekEngine::Rendering
 		)
 	{
 		m_Instance.Initialize(m_ApplicationInfo);
+		m_Surface.Initialize(m_Instance, windowTarget);
 	}
 
 	VulkanRHI::~VulkanRHI()

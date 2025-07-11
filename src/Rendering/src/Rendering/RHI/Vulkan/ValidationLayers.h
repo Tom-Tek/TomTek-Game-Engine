@@ -21,11 +21,9 @@
 
 #if defined (_WIN32) || defined (__linux__) && !defined (NDEBUG)
 
-#include <iostream>
 #include <vector>
-
 #include "VulkanPlatform.h"
-
+\
 namespace TomTekEngine::Rendering 
 {
 	class Instance;
@@ -34,6 +32,7 @@ namespace TomTekEngine::Rendering
 	{
 	public:
 		ValidationLayers();
+		~ValidationLayers();
 
 	public:
 		void Initialize(Instance* ownerInstance);
@@ -43,6 +42,7 @@ namespace TomTekEngine::Rendering
 
 	private:
 		VkDebugUtilsMessengerEXT m_DebugMessenger;
+		Instance* m_OwnerInstance;
 
 		const std::vector<const char*> m_ValidationLayers = {
 			"VK_LAYER_KHRONOS_validation",

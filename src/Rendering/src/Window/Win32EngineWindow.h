@@ -45,6 +45,10 @@ namespace TomTekEngine::Rendering
 		///         should be closed (e.g., user clicked the X button or pressed Alt+F4)
 		virtual bool PollWindowEvents() override;
 
+	public:
+		HINSTANCE GetHandleToInstance() const { return m_HandleToInstance; }
+		HWND GetHandleToWindow() const { return m_HandleToWindow; }
+
 	private:
 		HINSTANCE m_HandleToInstance;
 		HWND m_HandleToWindow;

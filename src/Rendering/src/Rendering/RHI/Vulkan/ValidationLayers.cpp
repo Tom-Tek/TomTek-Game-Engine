@@ -37,11 +37,24 @@ namespace TomTekEngine::Rendering
 	}
 
 	ValidationLayers::ValidationLayers() :
-		m_DebugMessenger(VK_NULL_HANDLE)
+		m_DebugMessenger(VK_NULL_HANDLE),
+		m_OwnerInstance(nullptr)
 	{}
+
+	ValidationLayers::~ValidationLayers()
+	{
+		if ( !m_OwnerInstance )
+		{
+			std::cout << "[ERROR]: ~ValidationLayer : Soft reference m_OwnerInstance is nullptr, cannot delete properly.\n";
+			return;
+		}
+
+	}
 
 	void ValidationLayers::Initialize(Instance* ownerInstance)
 	{
+		m_OwnerInstance = ownerInstance;
+
 		const VkDebugUtilsMessengerCreateInfoEXT createInfo = {
 			.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT,
 			.pNext = nullptr,

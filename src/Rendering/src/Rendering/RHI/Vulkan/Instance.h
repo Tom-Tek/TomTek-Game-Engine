@@ -51,9 +51,17 @@ namespace TomTekEngine::Rendering
 #ifndef NDEBUG
 			// Debug only extensions here
 			"VK_EXT_debug_utils",
+			//"VK_LAYER_KHRONOS_validation",
+#endif
+
+#ifdef _WIN32
+			"VK_KHR_win32_surface",
+#elif __linux__
+
 #endif
 
 			"VK_KHR_surface",
+
 			//"VK_KHR_swapchain",
 		};
 

@@ -49,5 +49,6 @@
     <ClCompile Include="src\Rendering\RHI\Vulkan\ValidationLayers.cpp" />
     <ClCompile Include="src\Rendering\RHI\DirectX12\DX12RHI.cpp" />
     <ClCompile Include="src\Rendering\RHI\Vulkan\VulkanPlatform.h" />
+    <ClCompile Include="src\Rendering\RHI\Vulkan\Surface.cpp" />
   </ItemGroup>
 </Project>
