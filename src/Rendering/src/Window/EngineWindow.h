@@ -23,6 +23,8 @@
 
 namespace TomTekEngine::Rendering
 {
+    class EngineRenderer;
+
     class EngineWindow
     {
     protected:
@@ -32,7 +34,7 @@ namespace TomTekEngine::Rendering
         /// Factory method that creates platform-specific window instances.
         /// Call this method instead of directly constructing this class, as the base class
         /// has no concrete implementation for any operating system.
-        static EngineWindow* CreateEngineWindow(const char* winName, uint32_t width, uint32_t height);
+        static std::unique_ptr<EngineWindow> CreateEngineWindow(const char* winName, uint32_t width, uint32_t height);
 
     public:
         /// Processes all pending window and input events from the OS message queue.

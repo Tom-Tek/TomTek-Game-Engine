@@ -20,47 +20,43 @@
 #if defined (_WIN32) || defined (__linux__)
 
 #include "Instance.h"
+#include <iostream>
 
 namespace TomTekEngine::Rendering 
 {
-	Instance::Instance() :
-		m_NativeInstance(VK_NULL_HANDLE)
-	{}
-
-	Instance::~Instance()
+	void Instance::Initialize(const VkApplicationInfo& appInfo)
 	{
-		vkDestroyInstance(m_NativeInstance, nullptr);
-	}
+		std::cout << "[VK_STATUS]: Attempting creation of VkInstance\n";
 
-	void Instance::Initialize(VkApplicationInfo applicationInfo)
-	{
-		const VkInstanceCreateInfo createInfo = {
-			.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
-			.pNext = nullptr,
-			.flags = 0,
-			.pApplicationInfo = &applicationInfo,
+		VkInstanceCreateInfo createInfo = {};
+		createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+		createInfo.pApplicationInfo = &appInfo;
+		createInfo.flags = 0;
+		
+		createInfo.ppEnabledExtensionNames = m_ExtensionNames.data();
+		createInfo.enabledExtensionCount = static_cast<uint32_t>(m_ExtensionNames.size());
 
 #ifdef NDEBUG
-			.enabledLayerCount = 0,
-			.ppEnabledLayerNames = nullptr,
+		createInfo.ppEnabledLayerNames = nullptr;
+		createInfo.enabledLayerCount = 0;
 #else
-			.enabledLayerCount = (uint32_t) m_ValidationLayers.GetValidationLayers().size(),
-			.ppEnabledLayerNames = m_ValidationLayers.GetValidationLayers().data(),
+		// Pass needed validation layer names cause we're in debug mode
+		createInfo.ppEnabledLayerNames = m_ValidationLayer.GetValidationLayerNames().data();
+		createInfo.enabledLayerCount = static_cast<uint32_t>(m_ValidationLayer.GetValidationLayerNames().size());
 #endif
-			.enabledExtensionCount = (uint32_t) m_ExtensionsUsed.size(),
-			.ppEnabledExtensionNames = m_ExtensionsUsed.data()
-		};
 
 		if ( vkCreateInstance(&createInfo, nullptr, &m_NativeInstance) != VK_SUCCESS )
 		{
-			throw std::runtime_error("TomTekEngine::Rendering vulkan vkInstance failed to create m_NativeInstance");
+			throw std::runtime_error("vkCreateInstance failed to create m_NativeInstance");
 		}
 
-#ifndef NDEBUG
-			m_ValidationLayers.Initialize(this);
-#endif
+		std::cout << "[VK_STATUS]: vkInstance m_NativeInstance creation went ok\n";
 
-		std::cout << "Vulkan Instance created\n";
+#ifndef NDEBUG
+		// Need to initialize validation layers after NativeInstance has been created
+		// So initialize it here and pray that everything goes okay
+		m_ValidationLayer.Initialize(this);
+#endif
 	}
 }
 

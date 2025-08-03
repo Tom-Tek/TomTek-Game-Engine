@@ -17,6 +17,7 @@
  * 
  * Script Author: Liam Rousselle
  */
+
 #if defined (_WIN32) || defined (__linux__)
 
 #include "Surface.h"
@@ -25,45 +26,53 @@
 #ifdef _WIN32
 	#include "Window/Win32EngineWindow.h"
 #elif __linux__
-	// Include the linux window class when I create it
+
 #endif
 
 namespace TomTekEngine::Rendering 
 {
 	Surface::Surface() :
-		m_NativeSurface(VK_NULL_HANDLE),
-		m_OwnerInstance(nullptr)
+		m_AncestorInstance(nullptr),
+		m_NativeSurface(VK_NULL_HANDLE)
 	{}
 
 	Surface::~Surface()
 	{
-		if ( m_OwnerInstance )
-		{
-			vkDestroySurfaceKHR(m_OwnerInstance->GetNative(), m_NativeSurface, nullptr);
-		}
+		vkDestroySurfaceKHR(m_AncestorInstance->GetNative(), m_NativeSurface, nullptr);
 	}
 
-	void Surface::Initialize(Instance ownerInstance, EngineWindow* windowTarget)
+	void Surface::Initialize(Instance* ancestorInstance, EngineWindow* windowTarget)
 	{
-		m_OwnerInstance = &ownerInstance;
+		m_AncestorInstance = ancestorInstance;
+
+		std::cout << "[VK_STATUS]: Attempt creation of Surface, using API:\n";
 
 #ifdef _WIN32
 
-		// Windows surface implementation
-		VkWin32SurfaceCreateInfoKHR createInfo = {
-			.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR,
-			.hinstance = ((Win32EngineWindow*) windowTarget)->GetHandleToInstance(),
-			.hwnd = ((Win32EngineWindow*) windowTarget)->GetHandleToWindow()
-		};
+		std::cout << "\tSurface API: Win32\n";
 
-		if ( vkCreateWin32SurfaceKHR(ownerInstance.GetNative(), &createInfo, nullptr, &m_NativeSurface) != VK_SUCCESS )
+		Win32EngineWindow* win32TargetWindow = static_cast<Win32EngineWindow*>(windowTarget);
+		if ( !win32TargetWindow )
 		{
-			throw std::runtime_error("TomTek Vulkan vkCreateWin32SurfaceKHR failed to create m_NativeSurface");
+			throw std::runtime_error("StaticCast failed on Win32TargetWindow");
 		}
 
-		std::cout << "Vulkan Win32 SurfaceKHR created\n";
+		// Win32 Surface Implementation
+		VkWin32SurfaceCreateInfoKHR createInfo = {};
+		createInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+		createInfo.hinstance = win32TargetWindow->GetHandleToInstance();
+		createInfo.hwnd = win32TargetWindow->GetHandleToWindow();
+
+		if ( vkCreateWin32SurfaceKHR(ancestorInstance->GetNative(), &createInfo, nullptr, &m_NativeSurface) != VK_SUCCESS )
+		{
+			throw std::runtime_error("vkCreateWin32SurfaceKHR failed to create m_NativeSurface");
+		}
+
+		std::cout << "[VK_STATUS]: Creation of vkSurfaceKHR ok\n";
 
 #elif __linux__
+
+		// Linux Surface Implementation
 
 #endif
 

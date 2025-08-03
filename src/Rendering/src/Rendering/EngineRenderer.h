@@ -49,7 +49,7 @@ namespace TomTekEngine::Rendering
 		/// Creates a new graphics engine renderer
 		/// The graphics API used depends on the operating system which the user
 		/// is currently on.
-		static EngineRenderer* CreateEngineRenderer(EngineWindow* windowTarget);
+		static std::unique_ptr<EngineRenderer> CreateEngineRenderer(EngineWindow* windowTarget);
 
 		/// Depending on the operating system which the client is using
 		/// this function will return the best suited graphics API to use

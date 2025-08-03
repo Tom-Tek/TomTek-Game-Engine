@@ -23,10 +23,24 @@
 
 namespace TomTekEngine::Rendering 
 {
-	static LRESULT CALLBACK WindowProcess(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	static LRESULT CALLBACK WindowProcess(HWND handleToWindow, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-		switch (msg)
+		switch ( msg )
 		{
+		case WM_CLOSE:
+		{
+			// Tell 
+
+			HMENU handleMenu;
+			handleMenu = GetMenu(handleToWindow);
+			if ( handleToWindow )
+			{
+				DestroyMenu(handleMenu);
+			}
+
+			break;
+		}
+
 		case WM_DESTROY:
 			PostQuitMessage(EXIT_SUCCESS);
 			return 0;
@@ -34,14 +48,16 @@ namespace TomTekEngine::Rendering
 		case WM_PAINT:
 		{
 			PAINTSTRUCT paintStruct;
-			HDC hdc = BeginPaint(hwnd, &paintStruct);
-			EndPaint(hwnd, &paintStruct);
+			HDC hdc = BeginPaint(handleToWindow, &paintStruct);
+			EndPaint(handleToWindow, &paintStruct);
 			return 0;
 		}
 
 		default:
-			return DefWindowProc(hwnd, msg, wParam, lParam);
+			return DefWindowProc(handleToWindow, msg, wParam, lParam);
 		}
+
+		return DefWindowProc(handleToWindow, msg, wParam, lParam);
 	} 
 
 	Win32EngineWindow::Win32EngineWindow(const char* winName, const uint32_t width, const uint32_t height) :
@@ -74,8 +90,9 @@ namespace TomTekEngine::Rendering
 
 		if ( !m_HandleToWindow )
 		{
-			throw std::runtime_error("TomTek Win32EngineWindow window creation failed");
+			throw std::runtime_error("TomTek Win32EngineWindow window creation failed [HWND NULL]");
 		}
+
 
 		ShowWindow(m_HandleToWindow, SW_SHOW);
 		UpdateWindow(m_HandleToWindow);
@@ -85,13 +102,24 @@ namespace TomTekEngine::Rendering
 
 	bool Win32EngineWindow::PollWindowEvents()
 	{
-		if ( !GetMessage(&m_Message, nullptr, 0, 0) )
+		// See if the window is offline
+		if ( GetWindowThreadProcessId(m_HandleToWindow, nullptr) == 0 )
 		{
 			return false;
 		}
 
-		TranslateMessage(&m_Message);
-		DispatchMessage(&m_Message);
+		// Process Window Events
+		// Using PeekMessage() so we can use idle time to render the scene
+		const bool gotMessage = ( PeekMessage(&m_Message, nullptr, 0U, 0U, PM_REMOVE) != 0 );
+		if ( gotMessage )
+		{
+			TranslateMessage(&m_Message);
+			DispatchMessage(&m_Message);
+		}
+		else
+		{
+
+		}
 
 		return true;
 	}

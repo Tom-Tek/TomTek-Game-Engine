@@ -21,54 +21,52 @@
 
 #if defined (_WIN32) || defined (__linux__)
 
-#include <iostream>
 #include "VulkanPlatform.h"
 
-#include "ValidationLayers.h"
+#include <vector>
+
+#ifndef NDEBUG
+	#include "ValidationLayer.h"
+#endif
 
 namespace TomTekEngine::Rendering 
 {
 	class Instance final
 	{
 	public:
-		Instance();
-		~Instance();
-
-	public:
-		/// Initializes the Vulkan instance by creating the VkInstance handle.
-		/// This sets up the Vulkan API connection and must be called before using any Vulkan functionality.
-		void Initialize(VkApplicationInfo appInfo);
+		/// Post construction initialization for creation of Native Instance.
+		/// Mandatory for this to be called after construction as otherwise m_NativeInstance
+		/// will remain as VK_NULL_HANDLE. Which will cause bugs for other classes accessing the
+		/// Native Instance.
+		void Initialize(const VkApplicationInfo& appInfo);
 
 	public:
 		VkInstance GetNative() const { return m_NativeInstance; }
-		operator VkInstance() const { return m_NativeInstance; }
+		
+#ifndef NDEBUG
+		ValidationLayer GetValidationLayer() const { return m_ValidationLayer; }
+#endif
 
 	private:
-		VkInstance m_NativeInstance;
-
-		const std::vector<const char*> m_ExtensionsUsed = {
+		const std::vector<const char*> m_ExtensionNames = {
+			VK_KHR_SURFACE_EXTENSION_NAME,
 
 #ifndef NDEBUG
-			// Debug only extensions here
-			"VK_EXT_debug_utils",
-			//"VK_LAYER_KHRONOS_validation",
+			VK_EXT_DEBUG_UTILS_EXTENSION_NAME,
 #endif
 
 #ifdef _WIN32
-			"VK_KHR_win32_surface",
+			VK_KHR_WIN32_SURFACE_EXTENSION_NAME,
 #elif __linux__
-
+			
 #endif
-
-			"VK_KHR_surface",
-
-			//"VK_KHR_swapchain",
 		};
 
-#ifndef NDEBUG
-		ValidationLayers m_ValidationLayers;
-#endif
+		VkInstance m_NativeInstance = VK_NULL_HANDLE;
 
+#ifndef NDEBUG
+		ValidationLayer m_ValidationLayer;
+#endif
 	};
 }
 

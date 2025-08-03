@@ -35,15 +35,14 @@ namespace TomTekEngine::Rendering
 		~Surface();
 
 	public:
-		void Initialize(Instance ownerInstance, EngineWindow* windowTarget);
+		void Initialize(Instance* ancestorInstance, EngineWindow* windowTarget);
 
 	public:
 		VkSurfaceKHR GetNative() const { return m_NativeSurface; }
-		operator VkSurfaceKHR() const { return m_NativeSurface; }
 
 	private:
 		VkSurfaceKHR m_NativeSurface;
-		Instance* m_OwnerInstance;
+		Instance* m_AncestorInstance;
 
 	};
 }

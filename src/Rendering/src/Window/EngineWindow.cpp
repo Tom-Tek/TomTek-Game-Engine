@@ -35,10 +35,10 @@ namespace TomTekEngine::Rendering
 		m_Height(height)
 	{}
 
-	EngineWindow* EngineWindow::CreateEngineWindow(const char* winName, uint32_t width, uint32_t height)
+	std::unique_ptr<EngineWindow> EngineWindow::CreateEngineWindow(const char* winName, uint32_t width, uint32_t height)
 	{
 #ifdef _WIN32
-		return (EngineWindow*) new Win32EngineWindow(winName, width, height);
+		return std::make_unique<Win32EngineWindow>(winName, width, height);
 #elif __linux__
 
 #elif __APPLE__

@@ -22,10 +22,12 @@
 #if defined (_WIN32) || defined (__linux__)
 
 #include "VulkanPlatform.h"
-
 #include "Rendering/EngineRenderer.h"
+
 #include "Instance.h"
 #include "Surface.h"
+#include "PhysicalDevices.h"
+#include "LogicalDevice.h"
 
 namespace TomTekEngine::Rendering 
 {
@@ -35,13 +37,15 @@ namespace TomTekEngine::Rendering
 	{
 	public:
 		VulkanRHI(EngineWindow* windowTarget);
-		~VulkanRHI();
-
+		
 	private:
-		VkApplicationInfo m_ApplicationInfo;
+		EngineWindow* m_WindowTarget;
 
+		VkApplicationInfo m_ApplicationInfo;
 		Instance m_Instance;
 		Surface m_Surface;
+		PhysicalDevices m_PhysicalDevices;
+		LogicalDevice m_LogicalDevice;
 
 	};
 }

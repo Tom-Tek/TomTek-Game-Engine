@@ -19,6 +19,8 @@
  */
 #if defined (_WIN32) || defined (__linux__)
 
+#include <string>
+
 #ifndef VULKAN_PLATFORM_H
 #define VULKAN_PLATFORM_H
 
@@ -30,7 +32,16 @@
 #endif
 #include <vulkan/vulkan.h>
 
-
+#ifndef NDEBUG
+    #include <vulkan/vk_enum_string_helper.h>
 #endif
 
+#ifndef NDEBUG
+	#define VK_PLAT_LOG_RESULT(result)                                                                             \
+		std::cout << "[VK_PLAT_LOG_RESULT]: " << string_VkResult(result) << "\n"; 
+#else
+    #define VK_PLAT_LOG_RESULT(ptr) (void*) ptr
+#endif
+
+#endif
 #endif

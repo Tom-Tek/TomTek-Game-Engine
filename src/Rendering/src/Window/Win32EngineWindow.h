@@ -22,6 +22,7 @@
 #ifdef _WIN32
 
 #include <Windows.h>
+#include <vector>
 #include "EngineWindow.h"
 
 namespace TomTekEngine::Rendering 
@@ -48,7 +49,7 @@ namespace TomTekEngine::Rendering
 	public:
 		HINSTANCE GetHandleToInstance() const { return m_HandleToInstance; }
 		HWND GetHandleToWindow() const { return m_HandleToWindow; }
-
+		
 	private:
 		HINSTANCE m_HandleToInstance;
 		HWND m_HandleToWindow;

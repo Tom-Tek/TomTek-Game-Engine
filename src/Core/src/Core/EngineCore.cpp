@@ -21,7 +21,7 @@
 
 #include <iostream>
 
-#if !defined (ENGINE_CORE_HEADLESS)
+#ifndef ENGINE_CORE_HEADLESS
 	using namespace TomTekEngine::Rendering;
 #endif
 
@@ -29,17 +29,15 @@ namespace TomTekEngine::Core
 {
 	EngineCore::EngineCore()
 	{
-
-		
-#if defined ENGINE_CORE_HEADLESS
+#ifdef ENGINE_CORE_HEADLESS
 		std::cout << "Building engine core headless.\n";
 #else
 		std::cout << "Building engine core with head.\n";
 
-		// Building with a head so create a window & renderer
-		m_Window = std::unique_ptr<EngineWindow>(EngineWindow::CreateEngineWindow("My Window!", 800, 600));
+		// Create the window
+		m_Window = EngineWindow::CreateEngineWindow("My Window!", 800, 600);
 		// Create the renderer
-		m_Renderer = std::unique_ptr<EngineRenderer>(EngineRenderer::CreateEngineRenderer(m_Window.get()));
+		m_Renderer = EngineRenderer::CreateEngineRenderer(m_Window.get());
 #endif
 	}
 
@@ -48,7 +46,10 @@ namespace TomTekEngine::Core
 		while ( true )
 		{
 			if ( m_Window.get() )
-				m_Window->PollWindowEvents();
+				if ( !m_Window->PollWindowEvents() )
+					break;
 		}
+
+		system("pause");
 	}
 }

@@ -50,6 +50,13 @@ workspace "TomTek-Game-Engine"
         links
         {
             "vulkan-1",
+            --"dxgi", "d3dcompiler", [TEMPORARILY DISABLED DIRECTX LINKAGE FOR VULKAN]
+        }
+
+        postbuildcommands
+        {
+            "{MKDIR} %{cfg.targetdir}/D3D12",
+            "{COPY} %{wks.location}/vendor/d3d12/D3D12Core.dll %{cfg.targetdir}/D3D12",
         }
 
     filter {}

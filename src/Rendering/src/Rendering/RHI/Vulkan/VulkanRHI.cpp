@@ -36,16 +36,14 @@ namespace TomTekEngine::Rendering
 				.engineVersion = VK_MAKE_VERSION( 1, 0, 0 ),
 				.apiVersion = VK_API_VERSION_1_2,
 			}
-		)
+		),
+		m_WindowTarget(windowTarget)
 	{
 		m_Instance.Initialize(m_ApplicationInfo);
-		m_Surface.Initialize(m_Instance, windowTarget);
+		m_Surface.Initialize(&m_Instance, m_WindowTarget);
+		m_PhysicalDevices.Initialize(&m_Instance, &m_Surface);
+		m_LogicalDevice.Initialize(&m_Instance, &m_PhysicalDevices);
 	}
-
-	VulkanRHI::~VulkanRHI()
-	{}
-
-
 
 }
 

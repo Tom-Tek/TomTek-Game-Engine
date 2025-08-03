@@ -70,6 +70,10 @@
       <AdditionalDependencies>vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>IF NOT EXIST ..\..\binaries\Debug\x86_64\Editor\D3D12 (mkdir ..\..\binaries\Debug\x86_64\Editor\D3D12)
+IF EXIST $(SolutionDir)\vendor\d3d12\D3D12Core.dll\ (xcopy /Q /E /Y /I $(SolutionDir)\vendor\d3d12\D3D12Core.dll ..\..\binaries\Debug\x86_64\Editor\D3D12 &gt; nul) ELSE (xcopy /Q /Y /I $(SolutionDir)\vendor\d3d12\D3D12Core.dll ..\..\binaries\Debug\x86_64\Editor\D3D12 &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -92,6 +96,10 @@
       <AdditionalDependencies>vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>IF NOT EXIST ..\..\binaries\Release\x86_64\Editor\D3D12 (mkdir ..\..\binaries\Release\x86_64\Editor\D3D12)
+IF EXIST $(SolutionDir)\vendor\d3d12\D3D12Core.dll\ (xcopy /Q /E /Y /I $(SolutionDir)\vendor\d3d12\D3D12Core.dll ..\..\binaries\Release\x86_64\Editor\D3D12 &gt; nul) ELSE (xcopy /Q /Y /I $(SolutionDir)\vendor\d3d12\D3D12Core.dll ..\..\binaries\Release\x86_64\Editor\D3D12 &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Entry\Entry.cpp" />

@@ -20,7 +20,6 @@
 #include "EngineRenderer.h"
 
 #ifdef _WIN32
-	#include "RHI/DirectX12/DX12RHI.h"
 	#include "RHI/Vulkan/VulkanRHI.h"
 #elif __linux__
 	#include "RHI/Vulkan/VulkanRHI.h"
@@ -34,14 +33,14 @@ namespace TomTekEngine::Rendering
 		m_WindowTarget(windowTarget)
 	{}
 
-	EngineRenderer* EngineRenderer::CreateEngineRenderer(EngineWindow* windowTarget)
+	std::unique_ptr<EngineRenderer> EngineRenderer::CreateEngineRenderer(EngineWindow* windowTarget)
 	{
 		const SupportedRenderingAPIs& suitedAPI = GetBestSuitedAPI();
 
 		if ( suitedAPI == SupportedRenderingAPIs::Vulkan )
-			return new VulkanRHI(windowTarget);
+			return std::make_unique<VulkanRHI>(windowTarget);
 		else if ( suitedAPI == SupportedRenderingAPIs::DirectX12 )
-			return new DX12RHI(windowTarget);
+			return nullptr;
 		else if ( suitedAPI == SupportedRenderingAPIs::Metal )
 			return nullptr;
 
@@ -61,7 +60,7 @@ namespace TomTekEngine::Rendering
 			return SupportedRenderingAPIs::Metal;
 #else
 	#ifdef _WIN32
-		return SupportedRenderingAPIs::DirectX12;
+		return SupportedRenderingAPIs::Vulkan;
 	#elif __linux__
 		return SupportedRenderingAPIs::Vulkan;
 	#elif __APPLE__
